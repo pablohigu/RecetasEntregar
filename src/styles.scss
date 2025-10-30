@@ -1,2 +1,48 @@
 /* You can add global styles to this file, and also import other style files */
-@import "bootstrap/dist/css/bootstrap.min.css";
+
+// 1. Define tu paleta de colores personalizada.
+$beige: #f5f5dc;
+$crema: #fdf5e6;
+$marron-oscuro: #8B4513;
+$marron-suave: #6B4F4B;
+$arena: #D2B48C;
+
+// 2. Sobrescribe las variables de Bootstrap con tus colores.
+// Esto permite usar clases como .bg-primary, .text-secondary, etc., con tu paleta.
+$primary: $marron-oscuro;
+$secondary: $marron-suave;
+$light: $crema;
+$body-bg: $beige;
+$body-color: $marron-suave;
+
+// Sobrescribe colores específicos de componentes si es necesario.
+$jumbotron-bg: $light;
+$headings-color: $primary;
+$border-color: $arena;
+
+// 3. Importa los archivos SCSS de Bootstrap.
+// Las variables deben definirse ANTES de esta importación.
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+
+// 4. Estilos personalizados adicionales que no se pueden lograr con variables.
+.jumbotron-custom {
+  // Bootstrap 5 ya no tiene 'jumbotron', pero podemos emularlo.
+  // Usaremos las variables que definimos arriba.
+  background-color: $jumbotron-bg;
+}
+
+// Efectos de hover personalizados que no vienen por defecto en Bootstrap
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--bs-box-shadow-lg) !important;
+  }
+}
+.group:hover .group-hover-zoom {
+  transform: scale(1.1);
+}
+.group:hover .group-hover-opacity-100 {
+  opacity: 1 !important;
+}

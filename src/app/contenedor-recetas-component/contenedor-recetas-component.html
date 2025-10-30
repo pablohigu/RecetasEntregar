@@ -1,0 +1,19 @@
+<div class="container py-5">
+  <div class="p-5 mb-5 rounded-3 shadow-lg text-center bg-light">
+    <div class="container-fluid py-3 text-center">
+      <i class="bi bi-book-half text-primary" style="font-size: 3rem;"></i>
+      <h1 class="display-4 fw-bold">El Sabor en tu Cocina</h1>
+      <p class="fs-4 col-md-10 mx-auto text-secondary">Explora nuestra colección de deliciosas recetas para cualquier ocasión. ¡Buen provecho!</p>
+    </div>
+  </div>
+  
+  <h2 class="text-center fw-light mb-5 border-bottom pb-3">Recetas Populares</h2>
+  
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 pb-5">
+    @for (receta of recetas; track receta.titulo) {
+      <div class="col">
+        <app-receta-component [receta]="receta"></app-receta-component>
+      </div>
+    }
+  </div>
+</div>
