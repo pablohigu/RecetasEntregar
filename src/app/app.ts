@@ -1,14 +1,13 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './navbar-component/navbar-component';
-import { ContenedorRecetasComponent } from "./contenedor-recetas-component/contenedor-recetas-component";
-
+import { Component } from '@angular/core';
+import { AdNavbarComponent } from './atomic-design/organisms/navbar/navbar';
+import { AdHomePageComponent } from './atomic-design/pages/home-page/home-page';
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, ContenedorRecetasComponent],
-  templateUrl: './app.html',
   standalone: true,
+  imports: [AdNavbarComponent, AdHomePageComponent], // <-- Asegúrate de importar esto
+  templateUrl: './app.html',
+  styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('RecetasEntregar');
+export class AppComponent {
+  // Ya no necesitamos el 'title'
 }

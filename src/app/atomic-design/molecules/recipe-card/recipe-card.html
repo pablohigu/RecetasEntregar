@@ -10,7 +10,10 @@
     <p class="card-text flex-grow-1 text-secondary">{{ receta.descripcion }}</p>
     <div class="mt-auto d-flex justify-content-between align-items-center">
        <a href="#" class="btn btn-primary fw-bold rounded-pill px-4">Ver Receta</a>
-       <i class="bi bi-heart-fill fs-4" style="cursor: pointer; color: #D2B48C;"></i>
+       
+       <button (click)="onDeleteClick()" class="btn btn-outline-danger btn-sm rounded-pill">
+         <i class="bi bi-trash-fill"></i>
+       </button>
     </div>
   </div>
 </div>
