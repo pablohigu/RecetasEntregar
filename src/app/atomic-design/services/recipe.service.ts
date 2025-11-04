@@ -7,7 +7,7 @@ const DEFAULT_RECIPES: Receta[] = [
     id: 1,
     titulo: 'Paella Valenciana',
     descripcion: 'Un clásico de la cocina española. Perfecta para disfrutar en familia los domingos.',
-    imagen: 'https://images.unsplash.com/photo-1598511829623-23b56932a179?q=80&w=2070&auto=format&fit=crop'
+    imagen: 'https://imgs.search.brave.com/Lqqw50L9yW_Q2JxzzGCIVpbj_ckxB2nawVN5wtF9uHc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL2htZy1wcm9k/L2ltYWdlcy9wYWVs/bGEtdmFsZW5jaWFu/YS1lbGxlLWdvdXJt/ZXQtNC02N2EzMWFi/NWM4NjlkLmpwZz9y/ZXNpemU9NjQwOio'
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const DEFAULT_RECIPES: Receta[] = [
     id: 3,
     titulo: 'Pizza Margherita',
     descripcion: 'La pizza más icónica y sencilla de Italia, con tomate, mozzarella fresca, albahaca y un chorrito de aceite de oliva.',
-    imagen: 'https://images.unsplash.com/photo-1598021680942-8aa3b21f3666?q=80&w=1994&auto=format&fit=crop'
+    imagen: 'https://imgs.search.brave.com/ETvkENHtICqRvj1moFFskSUJtOxo7EvDCxU8K2w-X6E/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/c3RhdGljYWxseS5p/by9pbWcvbGFtZXNh/ZGVsY29uZGUuZXMv/d3AtY29udGVudC91/cGxvYWRzLzIwMTYv/MDgvUGl6emEtbWFy/Z2hlcml0YS1pbWFn/ZW4tZGUtSWwtQ2Fz/ZXJ0YW5vLmpwZz9x/dWFsaXR5PTEwMCZm/PWF1dG8'
   }
 ];
 
@@ -39,19 +39,13 @@ export class RecipeService {
    * Añade una nueva receta a la lista.
    */
   addRecipe(receta: Omit<Receta, 'id'>) {
-    const newRecipe: Receta = {
-      ...receta,
+    const newRecipe: Receta = {...receta,
       // Generamos un ID simple basado en la fecha
+      // esos tres puntos lo que hacen es copiar todas las propiedades del objeto, al nuevo
       id: Date.now() 
     };
-    
-    // Actualizamos el signal con la nueva lista
     this.recipesSignal.update(currentRecipes => [newRecipe, ...currentRecipes]);
   }
-
-  /**
-   * Borra una receta de la lista por su ID.
-   */
   deleteRecipe(id: number) {
     this.recipesSignal.update(currentRecipes => 
       currentRecipes.filter(receta => receta.id !== id)

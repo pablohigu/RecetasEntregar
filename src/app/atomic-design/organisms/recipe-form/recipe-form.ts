@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
 export class AdRecipeFormComponent {
   private fb = inject(FormBuilder);
   private recipeService = inject(RecipeService);
-
   // Creamos el formulario reactivo
   recipeForm = this.fb.group({
     titulo: ['', Validators.required],
