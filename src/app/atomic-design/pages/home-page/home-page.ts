@@ -8,7 +8,6 @@ import { AdRecipeListComponent } from '../../organisms/recipe-list/recipe-list';
   imports: [
     CommonModule,
     AdHeroComponent,
-    AdRecipeFormComponent,
     AdRecipeListComponent
   ],
   templateUrl: './home-page.html',

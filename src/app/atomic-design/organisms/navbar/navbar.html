@@ -1,7 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-lg sticky-top py-3">
   <div class="container">
-    <a class="navbar-brand fw-bolder fs-4 text-primary" href="#">
-      <i class="bi bi-book-half me-2"></i>
+    <a class="navbar-brand fw-bolder fs-4 text-primary" routerLink="/recetas"> <i class="bi bi-book-half me-2"></i>
       Mi Recetario
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,9 +8,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Recetas</a></li>
+        
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/recetas" routerLinkActive="active" >Recetas</a>
+        </li>
         <li class="nav-item"><a class="nav-link" href="#">Sobre Nosotros</a></li>
-        <li class="nav-item ms-lg-3"><a class="btn btn-primary fw-bold" href="#formulario-receta">Añadir Receta</a></li>
+        <li class="nav-item ms-lg-3">
+          <a class="btn btn-primary fw-bold" routerLink="/anadir">Añadir Receta</a>
+        </li>
       </ul>
     </div>
   </div>
