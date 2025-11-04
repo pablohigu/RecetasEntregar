@@ -7,7 +7,7 @@ export const routes: Routes = [
   { 
     path: '', 
     redirectTo: 'recetas', 
-    
+    pathMatch: 'full'
   },
   
   // Ruta para la página de inicio (Hero + Lista)

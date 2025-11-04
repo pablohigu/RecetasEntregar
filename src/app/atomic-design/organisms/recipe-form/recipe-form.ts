@@ -26,7 +26,6 @@ export class AdRecipeFormComponent {
     if (this.recipeForm.valid) {
       this.recipeService.addRecipe(this.recipeForm.value as any);
       this.recipeForm.reset();
-      
       // <-- NUEVO: Redirigir al listado después de añadir
       this.router.navigate(['/recetas']); 
     }
