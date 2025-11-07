@@ -10,5 +10,4 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class AppComponent {
-  // Ya no necesitamos el 'title'
 }

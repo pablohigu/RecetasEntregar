@@ -2,18 +2,17 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RecipeService } from '../../services/recipe.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; // <-- IMPORTANTE: Añadir Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ad-recipe-form',
-  standalone: true, // <-- Añadir standalone: true
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './recipe-form.html',
 })
 export class AdRecipeFormComponent {
   private fb = inject(FormBuilder);
   private recipeService = inject(RecipeService);
-  private router = inject(Router); // <-- Inyectar el Router
+  private router = inject(Router); 
 
   // Creamos el formulario reactivo
   recipeForm = this.fb.group({
@@ -26,7 +25,6 @@ export class AdRecipeFormComponent {
     if (this.recipeForm.valid) {
       this.recipeService.addRecipe(this.recipeForm.value as any);
       this.recipeForm.reset();
-      // <-- NUEVO: Redirigir al listado después de añadir
       this.router.navigate(['/recetas']); 
     }
   }
