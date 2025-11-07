@@ -5,7 +5,7 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AdNavbarComponent, AdHomePageComponent, RouterOutlet], // <-- Asegúrate de importar esto
+  imports: [AdNavbarComponent, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

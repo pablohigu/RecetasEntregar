@@ -1,7 +1,7 @@
 <div class="card h-100 border-0 overflow-hidden rounded-4 shadow-lg group hover-lift bg-light">
   <div class="position-relative overflow-hidden">
-    <img [src]="receta.imagen" class="card-img-top group-hover-zoom" [alt]="receta.titulo" style="height: 200px; object-fit: cover; transition: transform 0.4s ease;">
-    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center opacity-0 group-hover-opacity-100" style="background-color: rgba(var(--bs-primary-rgb), 0.5); transition: opacity 0.3s ease;">
+    <img [src]="receta.imagen" class="card-img-top group-hover-zoom recipe-card-img" [alt]="receta.titulo">
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center opacity-0 group-hover-opacity-100 recipe-card-overlay">
       <i class="bi bi-eye-fill fs-1 text-light"></i>
     </div>
   </div>
@@ -10,7 +10,6 @@
     <p class="card-text flex-grow-1 text-secondary">{{ receta.descripcion }}</p>
     <div class="mt-auto d-flex justify-content-between align-items-center">
        <a href="#" class="btn btn-primary fw-bold rounded-pill px-4">Ver Receta</a>
-       
        <button (click)="onDeleteClick()" class="btn btn-outline-danger btn-sm rounded-pill">
          <i class="bi bi-trash-fill"></i>
        </button>
