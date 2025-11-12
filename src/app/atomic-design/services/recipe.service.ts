@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { Receta } from '../recipe.model';
 
-// Datos iniciales
 const DEFAULT_RECIPES: Receta[] = [
   {
     id: 1,
@@ -27,28 +26,24 @@ const DEFAULT_RECIPES: Receta[] = [
   providedIn: 'root'
 })
 export class RecipeService {
-  // Usamos un signal para manejar el estado de las recetas de forma reactiva
   private recipesSignal = signal<Receta[]>(DEFAULT_RECIPES);
-
-  // Exponemos el signal como solo lectura
   public recipes = this.recipesSignal.asReadonly();
 
   constructor() { }
 
-  /**
-   * Añade una nueva receta a la lista.
-   */
   addRecipe(receta: Omit<Receta, 'id'>) {
-    const newRecipe: Receta = {...receta,
-      // Generamos un ID simple basado en la fecha
-      // esos tres puntos lo que hacen es copiar todas las propiedades del objeto, al nuevo
-      id: Date.now() 
-    };
+    const newRecipe: Receta = {...receta, id: Date.now() };
     this.recipesSignal.update(currentRecipes => [newRecipe, ...currentRecipes]);
   }
+
   deleteRecipe(id: number) {
     this.recipesSignal.update(currentRecipes => 
       currentRecipes.filter(receta => receta.id !== id)
     );
+  }
+
+  // NUEVO MÉTODO
+  getRecipeById(id: number): Receta | undefined {
+    return this.recipesSignal().find(r => r.id === id);
   }
 }

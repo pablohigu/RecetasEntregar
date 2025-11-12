@@ -4,17 +4,44 @@
   <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
       <label for="titulo" class="form-label fw-bold">Título de la Receta</label>
-      <input type="text" class="form-control" id="titulo" formControlName="titulo" placeholder="Ej: Tarta de Queso">
+      <input type="text" class="form-control" 
+             [class.is-invalid]="recipeForm.get('titulo')?.invalid && recipeForm.get('titulo')?.touched"
+             id="titulo" formControlName="titulo" placeholder="Ej: Tarta de Queso">
+      
+      @if (recipeForm.get('titulo')?.hasError('required')) {
+        <div class="invalid-feedback">
+          El título es obligatorio.
+        </div>
+      }
     </div>
     
     <div class="mb-3">
       <label for="descripcion" class="form-label fw-bold">Descripción Corta</label>
-      <textarea class="form-control" id="descripcion" rows="3" formControlName="descripcion" placeholder="Ej: Cremosa tarta de queso al horno..."></textarea>
+      <textarea class="form-control" 
+             [class.is-invalid]="recipeForm.get('descripcion')?.invalid && recipeForm.get('descripcion')?.touched"
+             id="descripcion" rows="3" formControlName="descripcion" placeholder="Ej: Cremosa tarta de queso al horno..."></textarea>
+      
+      @if (recipeForm.get('descripcion')?.hasError('required')) {
+        <div class="invalid-feedback">
+          La descripción es obligatoria.
+        </div>
+      }
     </div>
 
     <div class="mb-3">
       <label for="imagen" class="form-label fw-bold">URL de la Imagen</label>
-      <input type="url" class="form-control" id="imagen" formControlName="imagen" placeholder="https://images.unsplash.com/...">
+      <input type="url" class="form-control" 
+             [class.is-invalid]="recipeForm.get('imagen')?.invalid && recipeForm.get('imagen')?.touched"
+             id="imagen" formControlName="imagen" placeholder="https://images.unsplash.com/...">
+      
+      <div class="invalid-feedback">
+        @if (recipeForm.get('imagen')?.hasError('required')) {
+          <span>La URL es obligatoria.</span>
+        }
+        @if (recipeForm.get('imagen')?.hasError('pattern')) {
+          <span>Debe ser una URL válida que empiece por http/https.</span>
+        }
+      </div>
     </div>
 
     <button type="submit" class="btn btn-primary fw-bold w-100 py-2" [disabled]="recipeForm.invalid">

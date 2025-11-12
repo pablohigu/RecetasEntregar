@@ -1,18 +1,20 @@
 <div class="card h-100 border-0 overflow-hidden rounded-4 shadow-lg group hover-lift bg-light">
   <div class="position-relative overflow-hidden">
     <img [src]="receta.imagen" class="card-img-top group-hover-zoom recipe-card-img" [alt]="receta.titulo">
-    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center opacity-0 group-hover-opacity-100 recipe-card-overlay">
+    <a [routerLink]="['/recetas', receta.id]" 
+       class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center opacity-0 group-hover-opacity-100 recipe-card-overlay text-decoration-none">
       <i class="bi bi-eye-fill fs-1 text-light"></i>
-    </div>
+    </a>
   </div>
   <div class="card-body d-flex flex-column p-4">
     <h5 class="card-title fw-bold text-primary">{{ receta.titulo }}</h5>
     <p class="card-text flex-grow-1 text-secondary">{{ receta.descripcion }}</p>
     <div class="mt-auto d-flex justify-content-between align-items-center">
-       <a href="#" class="btn btn-primary fw-bold rounded-pill px-4">Ver Receta</a>
-       <button (click)="onDeleteClick()" class="btn btn-outline-danger btn-sm rounded-pill">
+       <a [routerLink]="['/recetas', receta.id]" class="btn btn-primary fw-bold rounded-pill px-4">Ver Receta</a>
+       
+       <app-ad-button variant="outline-danger" (onClick)="onDeleteClick()">
          <i class="bi bi-trash-fill"></i>
-       </button>
+       </app-ad-button>
     </div>
   </div>
 </div>

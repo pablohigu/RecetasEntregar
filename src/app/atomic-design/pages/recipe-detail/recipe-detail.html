@@ -1,0 +1,26 @@
+@if (receta) {
+  <div class="container py-5">
+    <div class="mb-4">
+      <a routerLink="/recetas" class="text-decoration-none">
+         <app-ad-button variant="outline-secondary">
+           <i class="bi bi-arrow-left"></i> Volver
+         </app-ad-button>
+      </a>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <img [src]="receta.imagen" [alt]="receta.titulo" class="img-fluid rounded-4 shadow w-100 object-fit-cover">
+      </div>
+      <div class="col-md-6">
+        <h1 class="display-4 fw-bold text-primary">{{ receta.titulo }}</h1>
+        <p class="lead mt-4 text-secondary">{{ receta.descripcion }}</p>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="text-center py-5">
+    <h2>Receta no encontrada</h2>
+    <a routerLink="/recetas" class="btn btn-primary mt-3 rounded-pill px-4">Volver al listado</a>
+  </div>
+}
