@@ -1,1 +1,8 @@
-<p>rating-stars works!</p>
+ <div class="d-flex align-items-center text-warning">
+      @for (star of [1,2,3,4,5]; track star) {
+        <i class="bi" [class.bi-star-fill]="star <= rating" [class.bi-star]="star > rating"></i>
+      }
+      <span class="ms-2 text-secondary small fw-bold">
+        {{ rating | number:'1.1-1' }} <span class="fw-light">({{ votes }})</span>
+      </span>
+    </div>
