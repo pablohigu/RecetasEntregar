@@ -1,20 +1,19 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Receta } from '../../recipe.model';
 import { RouterLink } from '@angular/router';
+import { Receta } from '../../recipe.model';
 import { AdButtonComponent } from '../../atoms/button/button';
+import { RatingStarsComponent } from '../../atoms/rating-stars/rating-stars';
 
 @Component({
   selector: 'app-ad-recipe-card',
-  imports: [CommonModule, RouterLink , AdButtonComponent],
+  standalone: true,
+  imports: [CommonModule, RouterLink, AdButtonComponent, RatingStarsComponent],
   templateUrl: './recipe-card.html',
+  styleUrl: './recipe-card.scss'
 })
 export class AdRecipeCardComponent {
-  @Input() receta!: Receta;
-  @Output() onDelete = new EventEmitter<number>();
-
-  onDeleteClick() {
-    // Emitimos el ID de la receta que se va a borrar
-    this.onDelete.emit(this.receta.id);
-  }
+  @Input({required: true}) receta!: Receta;
+  @Output() deleteRequest = new EventEmitter<string>();
+  @Output() voteRequest = new EventEmitter<Receta>();
 }
