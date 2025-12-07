@@ -1,49 +1,52 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Receta } from '../recipe.model';
-
-const DEFAULT_RECIPES: Receta[] = [
-  {
-    id: 1,
-    titulo: 'Paella Valenciana',
-    descripcion: 'Un clásico de la cocina española. Perfecta para disfrutar en familia los domingos.',
-    imagen: 'https://imgs.search.brave.com/Lqqw50L9yW_Q2JxzzGCIVpbj_ckxB2nawVN5wtF9uHc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaXBz/LmhlYXJzdGFwcHMu/Y29tL2htZy1wcm9k/L2ltYWdlcy9wYWVs/bGEtdmFsZW5jaWFu/YS1lbGxlLWdvdXJt/ZXQtNC02N2EzMWFi/NWM4NjlkLmpwZz9y/ZXNpemU9NjQwOio'
-  },
-  {
-    id: 2,
-    titulo: 'Tacos al Pastor',
-    descripcion: 'Deliciosos tacos de cerdo marinado con piña, cilantro y cebolla. Un sabor auténtico de México.',
-    imagen: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?q=80&w=2071&auto=format&fit=crop'
-  },
-  {
-    id: 3,
-    titulo: 'Pizza Margherita',
-    descripcion: 'La pizza más icónica y sencilla de Italia, con tomate, mozzarella fresca, albahaca y un chorrito de aceite de oliva.',
-    imagen: 'https://imgs.search.brave.com/ETvkENHtICqRvj1moFFskSUJtOxo7EvDCxU8K2w-X6E/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/c3RhdGljYWxseS5p/by9pbWcvbGFtZXNh/ZGVsY29uZGUuZXMv/d3AtY29udGVudC91/cGxvYWRzLzIwMTYv/MDgvUGl6emEtbWFy/Z2hlcml0YS1pbWFn/ZW4tZGUtSWwtQ2Fz/ZXJ0YW5vLmpwZz9x/dWFsaXR5PTEwMCZm/PWF1dG8'
-  }
-];
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
-  private recipesSignal = signal<Receta[]>(DEFAULT_RECIPES);
+  private http = inject(HttpClient);
+  // 🔴 ¡PEGA TU URL DE MOCKAPI AQUÍ!
+  private apiUrl = 'https://693473354090fe3bf01ff294.mockapi.io/recipes'; 
+  private recipesSignal = signal<Receta[]>([]);
   public recipes = this.recipesSignal.asReadonly();
-
-  constructor() { }
-
-  addRecipe(receta: Omit<Receta, 'id'>) {
-    const newRecipe: Receta = {...receta, id: Date.now() };
-    this.recipesSignal.update(currentRecipes => [newRecipe, ...currentRecipes]);
+  constructor() {
+    this.loadRecipes();
   }
 
-  deleteRecipe(id: number) {
-    this.recipesSignal.update(currentRecipes => 
-      currentRecipes.filter(receta => receta.id !== id)
+  loadRecipes() {
+    this.http.get<Receta[]>(this.apiUrl).subscribe({
+      next: (data) => this.recipesSignal.set(data),
+      error: (e) => console.error('API Error:', e)
+    });
+  }
+
+  addRecipe(receta: Omit<Receta, 'id' | 'rating' | 'votos'>) {
+    const newRecipe = { ...receta, rating: 0, votos: 0 };
+    this.http.post<Receta>(this.apiUrl, newRecipe).subscribe(() => this.loadRecipes());
+  }
+
+  deleteRecipe(id: string) {
+    this.http.delete(`${this.apiUrl}/${id}`).subscribe(() => {
+      this.recipesSignal.update(list => list.filter(r => r.id !== id));
+    });
+  }
+
+  getRecipeById(id: string) {
+    return this.http.get<Receta>(`${this.apiUrl}/${id}`);
+  }
+
+  rateRecipe(id: string, current: Receta, userRating: number) {
+    const newVotes = (current.votos || 0) + 1;
+    const currentScore = (current.rating || 0) * (current.votos || 0);
+    const newRating = (currentScore + userRating) / newVotes;
+
+    const updated = { ...current, rating: newRating, votos: newVotes };
+
+    return this.http.put<Receta>(`${this.apiUrl}/${id}`, updated).pipe(
+      tap(() => this.loadRecipes())
     );
-  }
-
-  // NUEVO MÉTODO
-  getRecipeById(id: number): Receta | undefined {
-    return this.recipesSignal().find(r => r.id === id);
   }
 }
