@@ -1,1 +1,30 @@
-<p>voting-modal works!</p>
+<div class="modal d-block" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-primary">Valorar "{{ receta.titulo }}"</h5>
+        <button type="button" class="btn-close" (click)="close.emit()"></button>
+      </div>
+      <div class="modal-body text-center py-5">
+        <div class="d-flex justify-content-center gap-2 display-4 text-warning cursor-pointer">
+          @for (star of [1,2,3,4,5]; track star) {
+            <i class="bi" 
+               [class.bi-star-fill]="hover >= star || (!hover && selected >= star)" 
+               [class.bi-star]="hover < star && selected < star"
+               (mouseenter)="hover = star" 
+               (mouseleave)="hover = 0" 
+               (click)="selected = star"></i>
+          }
+        </div>
+        <p class="text-secondary mt-3 mb-0">
+          {{ selected ? 'Seleccionado: ' + selected : 'Toca para valorar' }}
+        </p>
+      </div>
+      <div class="modal-footer border-0 justify-content-center pt-0 pb-4">
+        <button class="btn btn-primary rounded-pill px-5 fw-bold" 
+                [disabled]="selected === 0" 
+                (click)="confirm.emit(selected)">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
