@@ -1,5 +1,14 @@
 <app-ad-hero></app-ad-hero>
-
 <div class="container py-5">
-  <app-ad-recipe-list></app-ad-recipe-list>
-  </div>
+  <app-ad-recipe-filter (filterChange)="handleFilter($event)"></app-ad-recipe-filter>
+  
+  <app-ad-recipe-list [recipes]="filteredRecipes()" 
+                      (deleteRequest)="handleDelete($event)" 
+                      (voteRequest)="votingRecipe.set($event)"></app-ad-recipe-list>
+  
+  @if (votingRecipe()) {
+    <app-ad-voting-modal [receta]="votingRecipe()!" 
+                         (close)="votingRecipe.set(null)" 
+                         (confirm)="handleVote($event)"></app-ad-voting-modal>
+  }
+</div>
