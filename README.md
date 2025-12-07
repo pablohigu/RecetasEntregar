@@ -100,5 +100,3 @@ Implementación de lógica de negocio real:
     Navegar a `http://localhost:4200`.
 
 ---
-
-> **Nota para evaluación:** Para probar la persistencia, se puede abrir la aplicación en dos pestañas diferentes; los cambios realizados en una (ej: añadir receta) se reflejarán en la otra tras refrescar, demostrando la conexión real al API.
