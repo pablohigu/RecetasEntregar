@@ -1,44 +1,40 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { Receta } from '../../recipe.model';
 import { AdButtonComponent } from '../../atoms/button/button';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [RouterModule, AdButtonComponent], 
+  imports: [RouterModule, AdButtonComponent, DecimalPipe], 
   templateUrl: './recipe-detail.html'
 })
 export class RecipeDetailComponent implements OnInit {
-  // Inyectamos el servicio que nos permite "leer" la URL del navegador
   private route = inject(ActivatedRoute);
-  
-  // Inyectamos nuestro servicio de datos para buscar la receta
   private recipeService = inject(RecipeService);
   
-  // Variable para guardar la receta que encontremos. Puede ser undefined si no existe.
-  receta?: Receta;
+  // Usamos una señal para la receta, inicializada como undefined
+  receta = signal<Receta | undefined>(undefined);
 
-  // ngOnInit se ejecuta automáticamente nada más cargar la página
   ngOnInit() {
-    // 1. LEER LA URL:
-    // 'snapshot' es una foto instantánea de la URL en este momento.
-    // 'paramMap' es el mapa de parámetros definidos en app.routes.ts (allí pusimos 'recetas/:id').
-    // .get('id') obtiene el valor que hay en el sitio de ':id'.
-    // Ejemplo: Si la URL es /recetas/15, esto nos devuelve el string "15".
-    const idString = this.route.snapshot.paramMap.get('id');
-    
-    // Convertimos el texto a número ("15" -> 15)
-    const id = Number(idString);
+    // 1. OBTENER ID (CORRECCIÓN TIPO):
+    // MockAPI usa IDs de texto, así que NO lo convertimos a Number.
+    const id = this.route.snapshot.paramMap.get('id');
 
-    // 2. BUSCAR DATOS:
-    // Si el ID es válido (existe y es un número), le pedimos al servicio esa receta concreta.
+    // 2. PETICIÓN ASÍNCRONA (CORRECCIÓN OBSERVABLE):
+    // Como getRecipeById ahora devuelve un Observable (porque viaja por internet),
+    // nos suscribimos para recibir el dato cuando llegue.
     if (id) {
-      this.receta = this.recipeService.getRecipeById(id);
+      this.recipeService.getRecipeById(id).subscribe({
+        next: (data) => {
+          this.receta.set(data); // Guardamos el dato en la señal
+        },
+        error: (err) => {
+          console.error('Error al cargar la receta:', err);
+        }
+      });
     }
-    
-    // Si no se encuentra la receta, la variable 'this.receta' se queda undefined
-    // y el HTML mostrará el bloque @else (Receta no encontrada).
   }
 }
