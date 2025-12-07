@@ -1,19 +1,25 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-lg sticky-top py-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-3">
   <div class="container">
-    <a class="navbar-brand fw-bolder fs-4 text-primary" routerLink="/recetas"> <i class="bi bi-book-half me-2"></i>
-      Mi Recetario
+    <a class="navbar-brand fw-bold fs-3 text-primary d-flex align-items-center" routerLink="/recetas">
+      <i class="bi bi-egg-fried me-2 text-warning fs-2"></i>
+      <span>Recetario<span class="text-secondary fw-light">Atomic</span></span>
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
-        
+    
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul class="navbar-nav ms-auto align-items-center gap-3">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/recetas" routerLinkActive="active" >Recetas</a>
+          <a class="nav-link fw-bold" routerLink="/recetas" routerLinkActive="text-primary active">
+            Explorar
+          </a>
         </li>
-        <li class="nav-item ms-lg-3">
-          <a class="btn btn-primary fw-bold" routerLink="/anadir">Añadir Receta</a>
+        <li class="nav-item">
+          <a class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" routerLink="/anadir">
+            <i class="bi bi-plus-lg me-1"></i> Nueva Receta
+          </a>
         </li>
       </ul>
     </div>

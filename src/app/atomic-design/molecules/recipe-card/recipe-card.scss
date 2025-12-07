@@ -1,11 +1,42 @@
-.object-fit-cover {
-  height: 200px;
-  object-fit: cover;
+.card-header-img {
+  height: 220px;
 }
 
-.transition-opacity {
+.transition-transform {
+  transition: transform 0.5s ease;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba($color: #5D4037, $alpha: 0.4);
+  backdrop-filter: blur(2px);
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
-.group:hover .group-hover-opacity-100 {
+
+// Efecto al hacer hover sobre la tarjeta
+.group:hover {
+  .overlay {
+    opacity: 1;
+  }
+  .card-img-top {
+    transform: scale(1.1);
+  }
+}
+
+.hover-scale {
+  transition: transform 0.2s;
+  &:hover { transform: scale(1.15); }
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hover-opacity-100:hover {
   opacity: 1 !important;
 }
