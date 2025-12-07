@@ -1,6 +1,4 @@
-Aquí tienes el archivo `README.md` completo y profesional, actualizado con todas las mejoras de arquitectura, responsividad y conexión a la nube. Está listo para copiar y pegar directamente en tu repositorio de GitHub.
 
-````markdown
 # 🍳 Recetario Atomic
 
 > Una aplicación moderna de gestión de recetas culinarias desarrollada con **Angular 19+**, **Signals** y arquitectura **Atomic Design**, conectada a la nube mediante **MockAPI**.
