@@ -1,9 +1,10 @@
 export interface Receta {
-  id: string; 
+  id: string;
   titulo: string;
   descripcion: string;
   imagen: string;
-  calorias?: number;
+  calorias: number;      // Ahora obligatorio
+  ingredientes: string[]; // Nuevo array para ingredientes
   rating: number;
   votos: number;
 }

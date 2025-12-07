@@ -50,7 +50,13 @@ h1, h2, h3, h4, h5, .navbar-brand, .display-4 {
     box-shadow: 0 15px 35px -5px rgba(93, 64, 55, 0.2) !important;
   }
 }
-
+.input-group-text {
+  color: $secondary;
+}
+.form-control:focus {
+  border-color: $dorado;
+  box-shadow: 0 0 0 0.25rem rgba($dorado, 0.25);
+}
 // Cursor pointer global
 .cursor-pointer {
   cursor: pointer;

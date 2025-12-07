@@ -1,52 +1,127 @@
-<div class="p-5 rounded-3 shadow-lg bg-light" id="formulario-receta">
-  <h2 class="text-center fw-light mb-4 border-bottom pb-3">Añadir Nueva Receta</h2>
+<div class="p-4 p-md-5 rounded-4 shadow-soft bg-white">
+  <h2 class="text-center fw-bold text-primary mb-4 font-serif">Nueva Creación Culinaria</h2>
   
   <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="titulo" class="form-label fw-bold">Título de la Receta</label>
-      <input type="text" class="form-control" 
-             [class.is-invalid]="recipeForm.get('titulo')?.invalid && recipeForm.get('titulo')?.touched"
-             id="titulo" formControlName="titulo" placeholder="Ej: Tarta de Queso">
-      
-      @if (recipeForm.get('titulo')?.hasError('required')) {
-        <div class="invalid-feedback">
-          El título es obligatorio.
-        </div>
-      }
-    </div>
     
-    <div class="mb-3">
-      <label for="descripcion" class="form-label fw-bold">Descripción Corta</label>
-      <textarea class="form-control" 
-             [class.is-invalid]="recipeForm.get('descripcion')?.invalid && recipeForm.get('descripcion')?.touched"
-             id="descripcion" rows="3" formControlName="descripcion" placeholder="Ej: Cremosa tarta de queso al horno..."></textarea>
-      
-      @if (recipeForm.get('descripcion')?.hasError('required')) {
-        <div class="invalid-feedback">
-          La descripción es obligatoria.
-        </div>
-      }
-    </div>
-
-    <div class="mb-3">
-      <label for="imagen" class="form-label fw-bold">URL de la Imagen</label>
-      <input type="url" class="form-control" 
-             [class.is-invalid]="recipeForm.get('imagen')?.invalid && recipeForm.get('imagen')?.touched"
-             id="imagen" formControlName="imagen" placeholder="https://images.unsplash.com/...">
-      
-      <div class="invalid-feedback">
-        @if (recipeForm.get('imagen')?.hasError('required')) {
-          <span>La URL es obligatoria.</span>
+    <div class="row g-3 mb-3">
+      <div class="col-md-8">
+        <label class="form-label fw-bold small text-secondary">NOMBRE DEL PLATO</label>
+        <input type="text" 
+               class="form-control form-control-lg bg-light border-0" 
+               [class.is-invalid]="recipeForm.get('titulo')?.invalid && recipeForm.get('titulo')?.touched"
+               formControlName="titulo" 
+               placeholder="Ej: Risotto de Setas">
+        
+        @if (recipeForm.get('titulo')?.invalid && recipeForm.get('titulo')?.touched) {
+          <div class="text-danger small mt-1">
+            <i class="bi bi-exclamation-circle"></i> El nombre es obligatorio.
+          </div>
         }
-        @if (recipeForm.get('imagen')?.hasError('pattern')) {
-          <span>Debe ser una URL válida que empiece por http/https.</span>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold small text-secondary">CALORÍAS</label>
+        <input type="number" 
+               class="form-control form-control-lg bg-light border-0" 
+               [class.is-invalid]="recipeForm.get('calorias')?.invalid && recipeForm.get('calorias')?.touched"
+               formControlName="calorias" 
+               placeholder="0">
+        
+        @if (recipeForm.get('calorias')?.invalid && recipeForm.get('calorias')?.touched) {
+          <div class="text-danger small mt-1">
+            <i class="bi bi-exclamation-circle"></i> Mínimo 1 caloría.
+          </div>
         }
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary fw-bold w-100 py-2" [disabled]="recipeForm.invalid">
-      <i class="bi bi-plus-circle-fill me-2"></i>
-      Añadir Receta
+    <div class="mb-3">
+      <label class="form-label fw-bold small text-secondary">HISTORIA DEL PLATO</label>
+      <textarea class="form-control bg-light border-0" 
+                rows="3" 
+                [class.is-invalid]="recipeForm.get('descripcion')?.invalid && recipeForm.get('descripcion')?.touched"
+                formControlName="descripcion" 
+                placeholder="Describe el sabor, la textura..."></textarea>
+      
+      @if (recipeForm.get('descripcion')?.invalid && recipeForm.get('descripcion')?.touched) {
+        <div class="text-danger small mt-1">
+          <i class="bi bi-exclamation-circle"></i> La descripción es obligatoria.
+        </div>
+      }
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label fw-bold small text-secondary">FOTO (URL)</label>
+      <input type="url" 
+             class="form-control bg-light border-0" 
+             [class.is-invalid]="recipeForm.get('imagen')?.invalid && recipeForm.get('imagen')?.touched"
+             formControlName="imagen" 
+             placeholder="https://...">
+      
+      @if (recipeForm.get('imagen')?.invalid && recipeForm.get('imagen')?.touched) {
+        <div class="text-danger small mt-1">
+          @if (recipeForm.get('imagen')?.hasError('required')) {
+             <span><i class="bi bi-exclamation-circle"></i> La imagen es obligatoria.</span>
+          }
+          @if (recipeForm.get('imagen')?.hasError('pattern')) {
+             <span><i class="bi bi-exclamation-circle"></i> Debe empezar por http:// o https://</span>
+          }
+        </div>
+      }
+      
+      @if (recipeForm.get('imagen')?.valid && recipeForm.value.imagen) {
+        <div class="mt-2 p-1 border rounded bg-white d-inline-block">
+          <img [src]="recipeForm.value.imagen" class="rounded object-fit-cover" style="height: 60px; width: 60px;" alt="Preview">
+          <small class="text-success ms-2"><i class="bi bi-check-circle"></i> URL válida</small>
+        </div>
+      }
+    </div>
+
+    <div class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <label class="form-label fw-bold small text-secondary mb-0">INGREDIENTES</label>
+        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill" (click)="addIngrediente()">
+          <i class="bi bi-plus-lg"></i> Añadir
+        </button>
+      </div>
+
+      <div formArrayName="ingredientes">
+        @for (ing of ingredientes.controls; track $index) {
+          <div class="mb-2">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-0 text-warning">●</span>
+              <input [formControlName]="$index" 
+                     type="text" 
+                     class="form-control bg-light border-0 rounded-start" 
+                     [class.is-invalid]="ing.invalid && ing.touched"
+                     placeholder="Ej: 200g de Arroz">
+              <button type="button" class="btn btn-light text-danger border-0" (click)="removeIngrediente($index)">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            
+            @if (ing.invalid && ing.touched) {
+              <div class="text-danger small ms-5">
+                <i class="bi bi-arrow-return-right"></i> El ingrediente no puede estar vacío.
+              </div>
+            }
+          </div>
+        }
+      </div>
+      
+      @if (ingredientes.length === 0) {
+        <div class="text-danger small text-center p-2 bg-danger bg-opacity-10 rounded">
+          <i class="bi bi-basket"></i> Debes añadir al menos un ingrediente.
+        </div>
+      }
+    </div>
+
+    <button type="submit" 
+            class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm hover-lift" 
+            [disabled]="recipeForm.invalid"
+            [class.opacity-50]="recipeForm.invalid">
+      <i class="bi bi-fire me-2"></i> 
+      {{ recipeForm.invalid ? 'Rellena todos los campos' : 'Publicar Receta' }}
     </button>
   </form>
 </div>

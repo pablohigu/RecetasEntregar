@@ -1,34 +1,53 @@
 @if (receta()) {
-  <div class="container py-5">
+  <div class="container py-4 py-md-5">
     <div class="mb-4">
-      <a routerLink="/recetas" class="text-decoration-none">
-         <app-ad-button variant="outline-secondary">
-           <i class="bi bi-arrow-left"></i> Volver
-         </app-ad-button>
+      <a routerLink="/recetas" class="btn btn-outline-secondary rounded-pill px-4">
+         <i class="bi bi-arrow-left me-2"></i> Volver
       </a>
     </div>
   
-    <div class="row">
-      <div class="col-md-6 mb-4">
-        <img [src]="receta()!.imagen" [alt]="receta()!.titulo" class="img-fluid rounded-4 shadow w-100 object-fit-cover">
+    <div class="row g-4 align-items-start">
+      <div class="col-lg-6">
+        <div class="position-relative rounded-5 overflow-hidden shadow-lg" style="min-height: 300px;">
+          <img [src]="receta()!.imagen" [alt]="receta()!.titulo" class="w-100 h-100 object-fit-cover">
+          <div class="position-absolute top-0 end-0 m-3">
+             <span class="badge bg-white text-dark shadow-sm px-3 py-2 rounded-pill fs-6">
+               🔥 {{ receta()!.calorias || 0 }} Kcal
+             </span>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <h1 class="display-4 fw-bold text-primary">{{ receta()!.titulo }}</h1>
-        
-        <div class="d-flex align-items-center gap-3 my-3">
-           <span class="badge bg-warning text-dark fs-6">
-             ★ {{ receta()!.rating | number:'1.1-1' }}
-           </span>
-           <span class="text-secondary small">({{ receta()!.votos }} votos)</span>
+
+      <div class="col-lg-6 ps-lg-5">
+        <div class="d-flex align-items-center gap-2 mb-2 text-warning">
+          <i class="bi bi-star-fill"></i>
+          <span class="fw-bold text-dark">{{ receta()!.rating | number:'1.1-1' }}</span>
+          <span class="text-secondary small">({{ receta()!.votos }} votos)</span>
         </div>
 
-        <p class="lead mt-4 text-secondary">{{ receta()!.descripcion }}</p>
+        <h1 class="display-4 fw-bold text-primary mb-4 font-serif">{{ receta()!.titulo }}</h1>
+        <p class="lead text-secondary mb-5">{{ receta()!.descripcion }}</p>
+
+        <div class="p-4 bg-white rounded-4 shadow-soft">
+          <h5 class="fw-bold text-primary mb-3 font-serif">
+            <i class="bi bi-basket me-2"></i>Ingredientes
+          </h5>
+          <ul class="list-unstyled mb-0">
+            @for (ing of (receta()!.ingredientes || []); track $index) {
+              <li class="py-2 border-bottom border-light d-flex align-items-center">
+                <i class="bi bi-check-circle-fill text-success me-3 small"></i>
+                {{ ing }}
+              </li>
+            } @empty {
+              <li class="text-muted fst-italic">Ingredientes no especificados.</li>
+            }
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 } @else {
-  <div class="text-center py-5">
-    <h2>Cargando receta...</h2>
-    <div class="spinner-border text-primary mt-3" role="status"></div>
+  <div class="min-vh-50 d-flex justify-content-center align-items-center">
+    <div class="spinner-border text-primary" role="status"></div>
   </div>
 }
