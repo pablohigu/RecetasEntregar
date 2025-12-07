@@ -1,129 +1,104 @@
-
 # 🍳 Recetario Atomic
 
-> Una aplicación moderna de gestión de recetas culinarias desarrollada con **Angular 19+**, **Signals** y arquitectura **Atomic Design**, conectada a la nube mediante **MockAPI**.
+> Una aplicación de gestión de recetas "Cloud-First" desarrollada con **Angular 19+**, **Signals** y arquitectura **Atomic Design**.
 
-Este proyecto implementa una solución completa y escalable para la asignatura de Desarrollo de Interfaces, destacando por su diseño responsivo "Gourmet", gestión de estado reactiva y persistencia de datos real.
+Este proyecto representa una solución completa para la asignatura de Desarrollo de Interfaces, combinando una estética moderna "Gourmet" con una arquitectura de software robusta y escalable.
 
 ---
 
 ## 🚀 Tecnologías y Herramientas
 
 * **Framework:** Angular 19+ (Standalone Components).
-* **Gestión de Estado:** Angular Signals (`signal`, `computed`, `effect`) para un flujo de datos reactivo y eficiente.
-* **Estilos:** Bootstrap 5 + SCSS personalizado (Diseño Gourmet, Glassmorphism, animaciones).
-* **Arquitectura:** Atomic Design (Átomos, Moléculas, Organismos, Páginas).
-* **Backend:** MockAPI (API RESTful en la nube).
-* **Formularios:** Reactive Forms con `FormArray` para gestión dinámica de ingredientes.
-* **Control de Flujo:** Nueva sintaxis de Angular (`@if`, `@for`).
+* **Gestión de Estado:** Angular Signals (`writable`, `computed`) para reactividad granular.
+* **Estilos:** Bootstrap 5 + SCSS (Diseño personalizado, Glassmorphism, Responsive Grid).
+* **Arquitectura:** Atomic Design + Patrón Smart/Dumb Components.
+* **Backend:** MockAPI (Persistencia real en la nube).
+* **Formularios:** Reactive Forms avanzados con `FormArray` para ingredientes dinámicos.
 
 ---
 
-## ✨ Funcionalidades Clave
+## 🏗️ Arquitectura de la Solución: Atomic Design
 
-### 1. Conexión Cloud-First (MockAPI)
-La aplicación opera contra un backend real, garantizando la persistencia de datos entre sesiones y dispositivos.
-* **CRUD Completo:** Crear, Leer, Actualizar y Borrar recetas directamente en la nube.
-* **Optimización:** Uso de `HttpClient` para operaciones asíncronas eficientes.
+El proyecto no está organizado por "tipo de archivo", sino por **complejidad de componente**, siguiendo la metodología Atomic Design. Esto garantiza la reutilización y el mantenimiento escalable.
 
-### 2. Gestión Avanzada de Recetas
-* **Creación Dinámica:** Formulario reactivo que permite añadir y eliminar ingredientes dinámicamente (`FormArray`).
-* **Validación Visual:** Feedback inmediato al usuario sobre el estado de los campos (título, calorías, URL de imagen, etc.).
-* **Detalle Rico:** Visualización inmersiva con lista de ingredientes, calorías y metadatos.
+La estructura se encuentra bajo `src/app/atomic-design/`:
 
-### 3. Sistema Social de Votación
-* **Valoración Interactiva:** Modal dedicado con animaciones para puntuar recetas.
-* **Cálculo en Tiempo Real:** Algoritmo de media ponderada que actualiza el rating y el conteo de votos instantáneamente en la interfaz.
+### 1. ⚛️ Átomos (`/atoms`)
+Los bloques de construcción indivisibles. Poseen estilos y lógica de presentación pura, pero no lógica de negocio.
+* **`RatingStarsComponent`**: Recibe un número (`@Input rating`) y renderiza visualmente las estrellas (llenas/vacías). No sabe de dónde viene el dato.
+* **`AdButtonComponent`**: Un botón reutilizable con variantes de estilo (`primary`, `outline-danger`) que encapsula las clases de Bootstrap.
 
-### 4. Búsqueda y Filtrado Inteligente
-* **Reactive Filtering:** Uso de `computed signals` para filtrar la lista de recetas por texto y puntuación mínima simultáneamente, sin mutar los datos originales.
+### 2. 🧬 Moléculas (`/molecules`)
+Agrupaciones de átomos que forman una unidad funcional simple.
+* **`RecipeCardComponent`**: Combina una imagen HTML, textos y los átomos `RatingStars` y `AdButton`.
+    * *Responsabilidad:* Mostrar el resumen de **una única receta**.
+    * *Comunicación:* Es un componente "tonto" (Dumb). Al hacer click en "Votar" o "Borrar", no ejecuta la acción, sino que emite un evento (`voteRequest`, `deleteRequest`) hacia arriba.
 
-### 5. Diseño UI/UX Responsivo
-* **Adaptabilidad:** Grid system ajustado para móviles, tablets y escritorio.
-* **Micro-interacciones:** Efectos `hover-lift`, transiciones suaves y sombras para una experiencia de usuario "premium".
+### 3. 🦠 Organismos (`/organisms`)
+Secciones complejas de la interfaz que forman partes distintivas de la aplicación.
+* **`RecipeListComponent`**: Gestiona la rejilla (Grid) responsiva de múltiples `RecipeCard`. Controla el layout y los estados vacíos (empty states).
+* **`RecipeFilterComponent`**: Una barra de herramientas completa con buscador de texto y selector de puntuación.
+* **`RecipeFormComponent`**: Un formulario complejo que gestiona validaciones visuales y la lógica dinámica de añadir/quitar ingredientes mediante `FormArray`.
+* **`VotingModalComponent`**: Un ecosistema autocontenido para la interacción de votación, con animaciones y gestión de estado visual (hover).
+
+### 4. 📄 Páginas (`/pages`) - "Smart Components"
+El nivel más alto. Aquí es donde se inyectan los servicios y se gestiona el estado.
+* **`HomePageComponent`**: El "Director de Orquesta".
+    1.  Inyecta `RecipeService`.
+    2.  Lee los **Signals** del servicio.
+    3.  Calcula datos derivados (filtro de recetas) usando `computed()`.
+    4.  Escucha los eventos de los organismos (ej: `deleteRequest` de la lista) y llama al servicio.
+* **`RecipeDetailComponent`**: Gestiona la vista detallada, recuperando datos por ID desde la URL.
 
 ---
 
-## 🏗️ Arquitectura de la Solución
+## 🔄 Flujo de Datos y Signals
 
-El proyecto sigue estrictamente los principios de **Atomic Design** y la separación de responsabilidades:
+La aplicación utiliza un flujo de datos unidireccional y reactivo:
 
-### 📂 Estructura de Directorios
+1.  **Servicio (`RecipeService`):** Mantiene el "Single Source of Truth" en un `signal` privado. Se conecta a MockAPI mediante `HttpClient`.
+2.  **Lectura:** Los componentes leen una señal de solo lectura (`asReadonly()`).
+3.  **Filtrado:** La `HomePage` utiliza `computed()` para filtrar la lista en tiempo real (por texto y estrellas) sin mutar el array original.
+4.  **Escritura:** Las acciones (crear, borrar, votar) llaman a métodos del servicio que actualizan el backend y, tras la respuesta exitosa, regeneran la señal local.
 
-```text
-src/app/atomic-design/
-├── atoms/          # Componentes indivisibles (RatingStars, Button)
-├── molecules/      # Agrupaciones simples (RecipeCard)
-├── organisms/      # Bloques funcionales complejos (RecipeList, RecipeFilter, VotingModal, RecipeForm)
-├── pages/          # Vistas completas (HomePage, RecipeDetail, RecipeAdd)
-└── services/       # Lógica de negocio y comunicación HTTP
-````
+---
 
-### 🧠 Patrón Smart vs. Dumb Components
+## ✨ Funcionalidades Destacadas
 
-  * **Smart Components (Páginas):**
-      * **`HomePage`**: Actúa como orquestador. Inyecta el `RecipeService`, gestiona los Signals de estado global y local, y coordina la comunicación entre los organismos.
-  * **Dumb Components (Organismos/Moléculas):**
-      * **`RecipeList`, `RecipeFilter`, `RecipeCard`**: Son componentes puros de presentación. No tienen dependencias de servicios; reciben datos exclusivamente vía `input()` y comunican acciones al padre mediante eventos `output()`.
+### Conexión Backend Real (MockAPI)
+Operaciones CRUD completas contra la nube. Los datos persisten entre recargas y dispositivos.
+* **Schema:** `id`, `titulo`, `descripcion`, `imagen`, `calorias` (Number), `rating` (Number), `votos` (Number), `ingredientes` (Array).
 
------
+### Sistema de Votación Ponderada
+Implementación de lógica de negocio real:
+> `Nueva Media = ((Media Actual * Votos Actuales) + Nuevo Voto) / (Votos Actuales + 1)`
 
-## ⚙️ Configuración del Backend (MockAPI)
+### UX/UI Gourmet
+* Diseño **totalmente responsivo** (adaptado a Móvil, Tablet y Desktop).
+* Feedback visual en formularios (mensajes de error en tiempo real).
+* Efectos de micro-interacción (`hover-lift`, transiciones de escala).
 
-Para el correcto funcionamiento, el proyecto se conecta a un endpoint en **MockAPI.io** configurado con el siguiente esquema en el recurso `recipes`:
+---
 
-| Campo | Tipo | Descripción |
-| :--- | :--- | :--- |
-| `id` | string | Identificador único (autogenerado) |
-| `titulo` | string | Nombre del plato |
-| `descripcion` | string | Historia o pasos de preparación |
-| `imagen` | string | URL de la fotografía |
-| `calorias` | number | Valor energético por ración |
-| `rating` | number | Puntuación media (0-5) |
-| `votos` | number | Cantidad total de valoraciones |
-| `ingredientes` | object | Array de strings (almacenado como objeto JSON) |
-
-> **Nota:** La URL del API se encuentra configurada en `src/app/atomic-design/services/recipe.service.ts`.
-
------
-
-## 🛠️ Instalación y Ejecución
-
-Sigue estos pasos para desplegar el proyecto en tu entorno local:
+## 🛠️ Instalación y Despliegue
 
 1.  **Clonar el repositorio:**
-
     ```bash
-    git clone <url-del-repositorio>
+    git clone <url-repo>
     cd RecetarioAtomic
     ```
 
 2.  **Instalar dependencias:**
-
     ```bash
     npm install
     ```
 
-3.  **Ejecutar el servidor de desarrollo:**
-
+3.  **Ejecutar:**
     ```bash
     ng serve
     ```
+    Navegar a `http://localhost:4200`.
 
-4.  **Acceder a la aplicación:**
-    Abre tu navegador y navega a `http://localhost:4200/`.
+---
 
------
-
-## 🧪 Comandos Útiles
-
-| Comando | Descripción |
-| :--- | :--- |
-| `ng serve` | Levanta el servidor de desarrollo local |
-| `ng build` | Compila el proyecto para producción (carpeta `dist/`) |
-| `ng test` | Ejecuta las pruebas unitarias con Karma/Jasmine |
-| `ng generate component` | Crea un nuevo componente (Angular CLI) |
-
-
-```
-```
+> **Nota para evaluación:** Para probar la persistencia, se puede abrir la aplicación en dos pestañas diferentes; los cambios realizados en una (ej: añadir receta) se reflejarán en la otra tras refrescar, demostrando la conexión real al API.
