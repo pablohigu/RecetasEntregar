@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-recipe-filter',
-  imports: [],
-  templateUrl: './recipe-filter.html',
-  styleUrl: './recipe-filter.scss',
+  selector: 'app-ad-recipe-filter',
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: './recipe-filter.html'
 })
-export class RecipeFilter {
+export class RecipeFilterComponent {
+  filterChange = output<{search: string, minRating: number}>();
+  searchTerm = '';
+  minRating = 0;
 
+  emitFilter() {
+    this.filterChange.emit({ search: this.searchTerm, minRating: Number(this.minRating) });
+  }
 }
