@@ -1,4 +1,4 @@
-# 🍳 Recetario Atomic
+# Recetario Atomic
 
 > Una aplicación de gestión de recetas "Cloud-First" desarrollada con **Angular 19+**, **Signals** y arquitectura **Atomic Design**.
 
@@ -6,7 +6,7 @@ Este proyecto representa una solución completa para la asignatura de Desarrollo
 
 ---
 
-## 🚀 Tecnologías y Herramientas
+## Tecnologías y Herramientas
 
 * **Framework:** Angular 19+ (Standalone Components).
 * **Gestión de Estado:** Angular Signals (`writable`, `computed`) para reactividad granular.
@@ -17,31 +17,31 @@ Este proyecto representa una solución completa para la asignatura de Desarrollo
 
 ---
 
-## 🏗️ Arquitectura de la Solución: Atomic Design
+## Arquitectura de la Solución: Atomic Design
 
 El proyecto no está organizado por "tipo de archivo", sino por **complejidad de componente**, siguiendo la metodología Atomic Design. Esto garantiza la reutilización y el mantenimiento escalable.
 
 La estructura se encuentra bajo `src/app/atomic-design/`:
 
-### 1. ⚛️ Átomos (`/atoms`)
+### 1. Átomos (`/atoms`)
 Los bloques de construcción indivisibles. Poseen estilos y lógica de presentación pura, pero no lógica de negocio.
 * **`RatingStarsComponent`**: Recibe un número (`@Input rating`) y renderiza visualmente las estrellas (llenas/vacías). No sabe de dónde viene el dato.
 * **`AdButtonComponent`**: Un botón reutilizable con variantes de estilo (`primary`, `outline-danger`) que encapsula las clases de Bootstrap.
 
-### 2. 🧬 Moléculas (`/molecules`)
+### 2. Moléculas (`/molecules`)
 Agrupaciones de átomos que forman una unidad funcional simple.
 * **`RecipeCardComponent`**: Combina una imagen HTML, textos y los átomos `RatingStars` y `AdButton`.
     * *Responsabilidad:* Mostrar el resumen de **una única receta**.
     * *Comunicación:* Es un componente "tonto" (Dumb). Al hacer click en "Votar" o "Borrar", no ejecuta la acción, sino que emite un evento (`voteRequest`, `deleteRequest`) hacia arriba.
 
-### 3. 🦠 Organismos (`/organisms`)
+### 3. Organismos (`/organisms`)
 Secciones complejas de la interfaz que forman partes distintivas de la aplicación.
 * **`RecipeListComponent`**: Gestiona la rejilla (Grid) responsiva de múltiples `RecipeCard`. Controla el layout y los estados vacíos (empty states).
 * **`RecipeFilterComponent`**: Una barra de herramientas completa con buscador de texto y selector de puntuación.
 * **`RecipeFormComponent`**: Un formulario complejo que gestiona validaciones visuales y la lógica dinámica de añadir/quitar ingredientes mediante `FormArray`.
 * **`VotingModalComponent`**: Un ecosistema autocontenido para la interacción de votación, con animaciones y gestión de estado visual (hover).
 
-### 4. 📄 Páginas (`/pages`) - "Smart Components"
+### 4. Páginas (`/pages`) - "Smart Components"
 El nivel más alto. Aquí es donde se inyectan los servicios y se gestiona el estado.
 * **`HomePageComponent`**: El "Director de Orquesta".
     1.  Inyecta `RecipeService`.
@@ -52,7 +52,7 @@ El nivel más alto. Aquí es donde se inyectan los servicios y se gestiona el es
 
 ---
 
-## 🔄 Flujo de Datos y Signals
+## Flujo de Datos y Signals
 
 La aplicación utiliza un flujo de datos unidireccional y reactivo:
 
@@ -63,7 +63,7 @@ La aplicación utiliza un flujo de datos unidireccional y reactivo:
 
 ---
 
-## ✨ Funcionalidades Destacadas
+## Funcionalidades Destacadas
 
 ### Conexión Backend Real (MockAPI)
 Operaciones CRUD completas contra la nube. Los datos persisten entre recargas y dispositivos.
@@ -80,7 +80,7 @@ Implementación de lógica de negocio real:
 
 ---
 
-## 🛠️ Instalación y Despliegue
+## Instalación y Despliegue
 
 1.  **Clonar el repositorio:**
     ```bash
